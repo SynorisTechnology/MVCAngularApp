@@ -1,0 +1,134 @@
+﻿
+@{
+    ViewBag.Title = "FindOrders";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div data-ng-controller="HomeController">
+    <div class="jumbotron">
+        <h1>Find Orders</h1>
+        <hr />
+        <form class="form-inline">
+            <div class="form-group">
+                <label class="sr-only" for="customerName">Customer Name</label>
+                <input type="text" class="form-control" id="customerName" data-ng-model="CustomerName" placeholder="Customer Full Name">
+            </div>
+            <div class="form-group">
+                <label class="sr-only" for="customerAddress">Address</label>
+                <input type="text" class="form-control" id="customerAddress" data-ng-model="CustomerAddress" placeholder="Address">
+            </div>
+            <button type="submit" data-ng-click="SearchOrders()" class="btn btn-primary"><i class="fa fa-search"></i> Search</button>
+        </form>
+       <div class="row">
+           <div class="col-md-12">
+               <div class="table-responsive">
+                   <table class="table table-bordered">
+                       <thead>
+                           <tr>
+                               <th>Order ID</th>
+                               <th>Customer Name</th>
+                               <th>Address</th>
+                               <th>Order Date</th>
+                               <th>Invoice No</th>
+                               <th>Status</th>
+                               <th>PaymentInfo</th>
+                               <th>TotalAmount</th>
+                               <th>Action</th>
+                           </tr>
+                       </thead>
+                       <tbody>
+                           <tr data-ng-repeat="odr in OrderList">
+                               <th scope="row">{{odr.OrderID}}</th>
+                               <td>{{odr.FullName}}</td>
+                               <td>{{odr.Address}}</td>
+                               <td>{{odr.OrderDate}}</td>
+                               <td>{{odr.InvoiceNo}}</td>
+                               <td>{{odr.Status}}</td>
+                               <td>{{odr.PaymentInfo}}</td>
+                               <td>{{odr.TotalAmount}}</td>
+                               <td><i class="fa fa-edit" data-ng-click="EditClick(odr)" data-toggle="modal" data-target=".bs-example-modal-lg"></i></td>
+                           </tr>
+                       </tbody>
+                   </table>
+               </div>
+           </div>
+       </div>
+       
+         <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        <h4 class="modal-title" id="exampleModalLabel">Order Info</h4>
+                        
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p>Customer Name: {{OrderInfo.FullName}}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>Invoice No: {{OrderInfo.InvoiceNo}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>SN</th>
+                                                <th>Product Code</th>
+                                                <th>Product Name</th>
+                                                <th>Price</th>
+                                                <th>Quantity</th>
+                                                <th>Discount</th>
+                                                <th>Total Amount</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr data-ng-repeat="or in OrderItemList">
+                                                <th scope="row">{{$index+1}}</th>
+                                                <td>{{or.ItemCode}}</td>
+                                                <td>{{or.ItemName}}</td>
+                                                <td>{{or.Price}}</td>
+                                                <td>{{or.Quantity}}</td>
+                                                <td>{{or.Discount}}</td>
+                                                <td>{{or.Price * or.Quantity}}</td>
+                                                <td><i class="fa fa-edit" data-ng-click="EditOrderItemClick(or)"></i></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <form>
+                            <h2>Edit Order item</h2>
+                            <div class="form-group">
+                                <label for="recipient-name" class="control-label">Item Code:</label>
+                                <input type="text" data-ng-model="OrderItem.ItemCode" class="form-control" id="recipient-code">
+                            </div>
+                            <div class="form-group">
+                                <label for="message-text" class="control-label">Item Name:</label>
+                                <input type="text" data-ng-model="OrderItem.ItemName" class="form-control" id="recipient-name">
+                            </div>
+                            <div class="form-group">
+                                <label for="recipient-name" class="control-label">Price:</label>
+                                <input type="text" data-ng-model="OrderItem.Price" class="form-control" id="Price">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="~/App/controllers/orderController.js"></script>
+}
